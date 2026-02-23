@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/my-car-app/static/css/main.e6c13ad2.css",
+    "main.js": "/my-car-app/static/js/main.46a42e15.js",
+    "static/js/453.6948f9c3.chunk.js": "/my-car-app/static/js/453.6948f9c3.chunk.js",
+    "index.html": "/my-car-app/index.html",
+    "main.e6c13ad2.css.map": "/my-car-app/static/css/main.e6c13ad2.css.map",
+    "main.46a42e15.js.map": "/my-car-app/static/js/main.46a42e15.js.map",
+    "453.6948f9c3.chunk.js.map": "/my-car-app/static/js/453.6948f9c3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.46a42e15.js"
+  ]
+}
