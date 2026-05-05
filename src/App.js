@@ -73,6 +73,8 @@ function parseDate(v) {
   // 最後的備選方案
   return s.slice(0, 10);
 }
+const rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true });
+
 function parseTitle(t) {
   const m = String(t||"").match(/([\d.]+)\s*公升[,，]?\s*(.*)/);
   return m ? { type:"fuel", liters:+m[1], fuelType:m[2].trim()||"98無鉛" }
