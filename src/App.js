@@ -55,8 +55,23 @@ async function lsSave(k, v) {
 // ─── Excel parser ──────────────────────────────────────────────────────────────
 function parseDate(v) {
   const s = String(v || "");
+  
+  // 處理 Excel 序列號（數字）
+  if (/^\d+(\.\d+)?$/.test(s)) {
+    const excelDate = parseFloat(s);
+    // Excel 序列號轉換：1900-01-01 是 1，1899-12-30 是 0
+    const date = new Date((excelDate - 25569) * 86400 * 1000);
+    return date.toISOString().split('T')[0]; // 返回 YYYY-MM-DD
+  }
+  
+  // 處理字符串日期格式
   const m = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-  return m ? `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}` : s.slice(0,10);
+  if (m) {
+    return `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
+  }
+  
+  // 最後的備選方案
+  return s.slice(0, 10);
 }
 function parseTitle(t) {
   const m = String(t||"").match(/([\d.]+)\s*公升[,，]?\s*(.*)/);
@@ -68,9 +83,10 @@ function importExcel(file, existing) {
     const reader = new FileReader();
     reader.onload = e => {
       try {
-        const wb = XLSX.read(e.target.result, { type:"binary" });
+        const wb = XLSX.read(e.target.result, { type: "binary" });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(ws, { header:1 });
+        // 關鍵：添加 raw:true 保留原始值
+        const rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true });
         const existKeys = new Set(existing.map(r => r.date+"_"+r.odometer));
         const out = [];
         for (let i = 1; i < rows.length; i++) {
